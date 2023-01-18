@@ -1,11 +1,14 @@
 import "./App.css";
 import "../src/components/MenuButton";
+import "../src/components/OptionButton";
 
 import { useState, useEffect } from "react";
 import MenuButton from "../src/components/MenuButton";
+import OptionButton from "../src/components/OptionButton";
 
 function App() {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState({});
+  const [selectedMonitorType, setSelectedMonitorType] = useState();
 
   const getData = async () => {
     return await fetch("/Legends.json", {
@@ -27,8 +30,22 @@ function App() {
     <div>
       <div className="monitor-types-container">
         {data.MonitorType?.map((type) => (
-          <MenuButton key={type.Id} onclick={null} text={type.Name} />
+          <MenuButton
+            key={type.Id}
+            onClick={() => setSelectedMonitorType(type.Id)}
+            text={type.Name}
+          />
         ))}
+      </div>
+      <div className="monitor-list">
+        {data.Monitor?.filter(
+          (monitor) => monitor.MonitorTypeId === selectedMonitorType
+        ).map((monitor) => {
+          console.log(monitor);
+          return (
+            <OptionButton key={monitor.Id} onClick={null} text={monitor.Name} />
+          );
+        })}
       </div>
     </div>
   );
