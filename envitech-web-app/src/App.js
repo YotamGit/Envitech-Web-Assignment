@@ -32,6 +32,10 @@ function App() {
     })();
   }, []);
 
+  const toggleLegend = (open) => {
+    setShowLegend(open);
+  };
+
   return (
     <div>
       <div className="monitor-types-container">
