@@ -1,0 +1,9 @@
+.menu-button {
+  all: unset;
+  text-align: center;
+  color: rgb(218, 214, 214);
+  font-size: 2rem;
+  padding-block: 1rem;
+  background-color: #2f3136;
+  cursor: pointer;
+}

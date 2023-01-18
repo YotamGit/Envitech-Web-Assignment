@@ -37,41 +37,55 @@ function App() {
   };
 
   return (
-    <div>
+    <div className="envitech-web-app">
       <div className="monitor-types-container">
         {data.MonitorType?.map((type) => (
-          <MenuButton
-            key={type.Id}
-            onClick={() => setSelectedMonitorType(type.Id)}
-            text={type.Name}
-          />
+          <>
+            <MenuButton
+              key={type.Id}
+              onClick={() =>
+                setSelectedMonitorType(
+                  selectedMonitorType === type.Id ? undefined : type.Id
+                )
+              }
+              text={type.Name}
+            />
+            {
+              <div
+                className={`monitor-list${
+                  type.Id === selectedMonitorType ? " expanded" : ""
+                }`}
+              >
+                {data.Monitor?.filter(
+                  (monitor) => monitor.MonitorTypeId === type.Id
+                ).map((monitor) => {
+                  return (
+                    <OptionButton
+                      key={monitor.Id}
+                      onClick={() => {
+                        let legendId = data.MonitorType.find(
+                          (type) => type.Id === monitor.MonitorTypeId
+                        ).LegendId;
+
+                        setLegendProps({
+                          monitorName: monitor.Name,
+                          tags: data.Legends.find(
+                            (legend) => legend.Id === legendId
+                          ).tags,
+                        });
+
+                        toggleLegend(true);
+                      }}
+                      text={monitor.Name}
+                    />
+                  );
+                })}
+              </div>
+            }
+          </>
         ))}
       </div>
-      <div className="monitor-list">
-        {data.Monitor?.filter(
-          (monitor) => monitor.MonitorTypeId === selectedMonitorType
-        ).map((monitor) => {
-          return (
-            <OptionButton
-              key={monitor.Id}
-              onClick={() => {
-                let legendId = data.MonitorType.find(
-                  (type) => type.Id === monitor.MonitorTypeId
-                ).LegendId;
 
-                setLegendProps({
-                  monitorName: monitor.Name,
-                  tags: data.Legends.find((legend) => legend.Id === legendId)
-                    .tags,
-                });
-
-                toggleLegend(true);
-              }}
-              text={monitor.Name}
-            />
-          );
-        })}
-      </div>
       {showLegend && (
         <MonitorLegend
           legendProps={{ ...legendProps, toggleLegend: toggleLegend }}

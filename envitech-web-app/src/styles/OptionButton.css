@@ -1,0 +1,13 @@
+.option-button {
+  all: unset;
+  text-align: center;
+  color: rgb(218, 214, 214);
+  font-size: 2rem;
+  padding-block: 0.225rem;
+  background-color: #4a4d55;
+  cursor: pointer;
+}
+
+.option-button:last-child {
+  margin-bottom: 1rem;
+}
