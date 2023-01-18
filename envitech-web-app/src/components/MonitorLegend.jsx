@@ -10,7 +10,7 @@ const MonitorLegend = ({
         <div className="legend-title">{monitorName}</div>
         <div>
           {tags.map((tag) => (
-            <div className="legend-property" key={tag.Label}>
+            <div key={tag.Label} className="legend-property">
               <span
                 style={{
                   backgroundColor: tag.Color,
@@ -25,7 +25,7 @@ const MonitorLegend = ({
           ))}
         </div>
         <button
-          className="close-legend-button"
+          className="legend-close-button"
           onClick={() => toggleLegend(false)}
         >
           close
