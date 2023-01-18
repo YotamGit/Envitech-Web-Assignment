@@ -5,10 +5,16 @@ import "../src/components/OptionButton";
 import { useState, useEffect } from "react";
 import MenuButton from "../src/components/MenuButton";
 import OptionButton from "../src/components/OptionButton";
+import MonitorLegend from "./components/MonitorLegend";
 
 function App() {
   const [data, setData] = useState({});
   const [selectedMonitorType, setSelectedMonitorType] = useState();
+  const [legendProps, setLegendProps] = useState({
+    monitorName: undefined,
+    tags: undefined,
+  });
+  const [showLegend, setShowLegend] = useState(false);
 
   const getData = async () => {
     return await fetch("/Legends.json", {
@@ -41,12 +47,32 @@ function App() {
         {data.Monitor?.filter(
           (monitor) => monitor.MonitorTypeId === selectedMonitorType
         ).map((monitor) => {
-          console.log(monitor);
           return (
-            <OptionButton key={monitor.Id} onClick={null} text={monitor.Name} />
+            <OptionButton
+              key={monitor.Id}
+              onClick={() => {
+                let legendId = data.MonitorType.find(
+                  (type) => type.Id == monitor.MonitorTypeId
+                ).LegendId;
+
+                setLegendProps({
+                  monitorName: monitor.Name,
+                  tags: data.Legends.find((legend) => legend.Id === legendId)
+                    .tags,
+                });
+
+                toggleLegend(true);
+              }}
+              text={monitor.Name}
+            />
           );
         })}
       </div>
+      {showLegend && (
+        <MonitorLegend
+          legendProps={{ ...legendProps, toggleLegend: toggleLegend }}
+        />
+      )}
     </div>
   );
 }
