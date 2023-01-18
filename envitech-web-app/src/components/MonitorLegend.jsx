@@ -1,8 +1,10 @@
+import "../styles/MonitorLegend.css";
+
 const MonitorLegend = ({
   legendProps: { monitorName, tags, toggleLegend },
 }) => {
   return (
-    <div className="MonitorLegend">
+    <div className="monitor-legend">
       <div>{monitorName}</div>
       <div>
         {tags.map((tag) => (

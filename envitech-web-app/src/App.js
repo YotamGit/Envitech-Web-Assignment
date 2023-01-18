@@ -56,7 +56,7 @@ function App() {
               key={monitor.Id}
               onClick={() => {
                 let legendId = data.MonitorType.find(
-                  (type) => type.Id == monitor.MonitorTypeId
+                  (type) => type.Id === monitor.MonitorTypeId
                 ).LegendId;
 
                 setLegendProps({
