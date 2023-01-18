@@ -1,10 +1,38 @@
-.monitor-legend {
-  border: 3px solid black;
-  width: fit-content;
-  padding: 1rem;
+.legend-background {
+  background-color: rgba(124, 127, 134, 0.692);
+  width: 100%;
+  height: 100%;
   position: absolute;
+}
+
+.monitor-legend {
+  background-color: rgb(82, 83, 87);
+  color: white;
+  border-radius: 8px;
+  width: fit-content;
+  padding: 2rem 4rem 4rem 4rem;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+.legend-title {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+}
+
+.legend-property {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.legend-property:not(:first-child) {
+  margin-top: 0.5rem;
 }
