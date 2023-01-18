@@ -1,9 +1,11 @@
 import "./App.css";
+import "../src/components/MenuButton";
 
 import { useState, useEffect } from "react";
+import MenuButton from "../src/components/MenuButton";
 
 function App() {
-  const [data, setData] = useState();
+  const [data, setData] = useState([]);
 
   const getData = async () => {
     return await fetch("/Legends.json", {
@@ -21,7 +23,15 @@ function App() {
     })();
   }, []);
 
-  return <div>{JSON.stringify(data)}</div>;
+  return (
+    <div>
+      <div className="monitor-types-container">
+        {data.MonitorType?.map((type) => (
+          <MenuButton key={type.Id} onclick={null} text={type.Name} />
+        ))}
+      </div>
+    </div>
+  );
 }
 
 export default App;
