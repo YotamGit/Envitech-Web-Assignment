@@ -2,13 +2,14 @@ import "./App.css";
 import "../src/components/MenuButton";
 import "../src/components/OptionButton";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import MenuButton from "../src/components/MenuButton";
 import OptionButton from "../src/components/OptionButton";
 import MonitorLegend from "./components/MonitorLegend";
+import FileInput from "./components/FileInput";
 
 function App() {
-  const [data, setData] = useState({});
+  const [data, setData] = useState();
   const [selectedMonitorType, setSelectedMonitorType] = useState();
   const [legendProps, setLegendProps] = useState({
     monitorName: undefined,
@@ -17,20 +18,14 @@ function App() {
   const [showLegend, setShowLegend] = useState(false);
 
   const getData = async () => {
-    return await fetch("/Legends.json", {
+    let data = await fetch("/Legends.json", {
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
       },
     });
+    setData(await data.json());
   };
-
-  useEffect(() => {
-    (async () => {
-      const data = await getData();
-      setData(await data.json());
-    })();
-  }, []);
 
   const toggleLegend = (open) => {
     setShowLegend(open);
@@ -38,53 +33,62 @@ function App() {
 
   return (
     <div className="envitech-web-app">
-      <div className="monitor-types-container">
-        {data.MonitorType?.map((type) => (
-          <>
-            <MenuButton
-              key={type.Id}
-              onClick={() =>
-                setSelectedMonitorType(
-                  selectedMonitorType === type.Id ? undefined : type.Id
-                )
+      {data ? (
+        <div className="monitor-types-container">
+          {data?.MonitorType?.map((type) => (
+            <div
+              key={`monitor-type-${type.Id}`}
+              style={{ display: "contents" }}
+            >
+              <MenuButton
+                onClick={() =>
+                  setSelectedMonitorType(
+                    selectedMonitorType === type.Id ? undefined : type.Id
+                  )
+                }
+                text={type.Name}
+              />
+              {
+                <div
+                  className={`monitor-list${
+                    type.Id === selectedMonitorType ? " expanded" : ""
+                  }`}
+                >
+                  {data?.Monitor?.filter(
+                    (monitor) => monitor.MonitorTypeId === type.Id
+                  ).map((monitor) => {
+                    return (
+                      <OptionButton
+                        key={`monitor-${monitor.MonitorTypeId}-${monitor.Id}`}
+                        onClick={() => {
+                          let legendId = data.MonitorType.find(
+                            (type) => type.Id === monitor.MonitorTypeId
+                          ).LegendId;
+
+                          setLegendProps({
+                            monitorName: monitor.Name,
+                            tags: data?.Legends.find(
+                              (legend) => legend.Id === legendId
+                            ).tags,
+                          });
+
+                          toggleLegend(true);
+                        }}
+                        text={monitor.Name}
+                      />
+                    );
+                  })}
+                </div>
               }
-              text={type.Name}
-            />
-            {
-              <div
-                className={`monitor-list${
-                  type.Id === selectedMonitorType ? " expanded" : ""
-                }`}
-              >
-                {data.Monitor?.filter(
-                  (monitor) => monitor.MonitorTypeId === type.Id
-                ).map((monitor) => {
-                  return (
-                    <OptionButton
-                      key={monitor.Id}
-                      onClick={() => {
-                        let legendId = data.MonitorType.find(
-                          (type) => type.Id === monitor.MonitorTypeId
-                        ).LegendId;
-
-                        setLegendProps({
-                          monitorName: monitor.Name,
-                          tags: data.Legends.find(
-                            (legend) => legend.Id === legendId
-                          ).tags,
-                        });
-
-                        toggleLegend(true);
-                      }}
-                      text={monitor.Name}
-                    />
-                  );
-                })}
-              </div>
-            }
-          </>
-        ))}
-      </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div>
+          <FileInput setData={setData} />
+          <button onClick={getData}>Use Default Data</button>
+        </div>
+      )}
 
       {showLegend && (
         <MonitorLegend
