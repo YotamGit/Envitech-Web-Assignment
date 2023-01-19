@@ -48,38 +48,34 @@ function App() {
                 }
                 text={type.Name}
               />
-              {
-                <div
-                  className={`monitor-list${
-                    type.Id === selectedMonitorType ? " expanded" : ""
-                  }`}
-                >
-                  {data?.Monitor?.filter(
-                    (monitor) => monitor.MonitorTypeId === type.Id
-                  ).map((monitor) => {
-                    return (
-                      <OptionButton
-                        key={`monitor-${monitor.MonitorTypeId}-${monitor.Id}`}
-                        onClick={() => {
-                          let legendId = data.MonitorType.find(
-                            (type) => type.Id === monitor.MonitorTypeId
-                          ).LegendId;
+              <div
+                className={`monitor-list${
+                  type.Id === selectedMonitorType ? " expanded" : ""
+                }`}
+              >
+                {data?.Monitor?.filter(
+                  (monitor) => monitor.MonitorTypeId === type.Id
+                ).map((monitor) => (
+                  <OptionButton
+                    key={`monitor-${monitor.MonitorTypeId}-${monitor.Id}`}
+                    onClick={() => {
+                      let legendId = data.MonitorType.find(
+                        (type) => type.Id === monitor.MonitorTypeId
+                      ).LegendId;
 
-                          setLegendProps({
-                            monitorName: monitor.Name,
-                            tags: data?.Legends.find(
-                              (legend) => legend.Id === legendId
-                            ).tags,
-                          });
+                      setLegendProps({
+                        monitorName: monitor.Name,
+                        tags: data?.Legends.find(
+                          (legend) => legend.Id === legendId
+                        ).tags,
+                      });
 
-                          toggleLegend(true);
-                        }}
-                        text={monitor.Name}
-                      />
-                    );
-                  })}
-                </div>
-              }
+                      toggleLegend(true);
+                    }}
+                    text={monitor.Name}
+                  />
+                ))}
+              </div>
             </div>
           ))}
         </div>
