@@ -84,9 +84,12 @@ function App() {
           ))}
         </div>
       ) : (
-        <div>
+        <div className="data-input-selector">
+          <div className="title">Select Data</div>
           <FileInput setData={setData} />
-          <button onClick={getData}>Use Default Data</button>
+          <button className="default-data-button" onClick={getData}>
+            Use Default Data
+          </button>
         </div>
       )}
 

@@ -1,3 +1,5 @@
+import "../styles/FileInput.css";
+
 const FileInput = ({ setData }) => {
   const handleChange = (e) => {
     const fileReader = new FileReader();
@@ -8,8 +10,10 @@ const FileInput = ({ setData }) => {
   };
 
   return (
-    <div>
-      <label htmlFor="upload-file">Use File As Input</label>
+    <div className="file-input-container">
+      <label className="input-label" htmlFor="upload-file">
+        Use File As Input
+      </label>
       <input
         style={{
           position: "absolute",

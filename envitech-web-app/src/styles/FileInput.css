@@ -1,0 +1,7 @@
+.file-input-container .input-label {
+  margin-top: 1.5rem;
+  padding: 0.5rem 1rem 0.5rem 1rem;
+  background-color: #383a3d;
+  border-radius: 8px;
+  cursor: pointer;
+}
